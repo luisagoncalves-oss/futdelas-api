@@ -1,16 +1,10 @@
-FROM ubuntu:latest AS build
-
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
+FROM eclipse-temurin:17-jdk-alpine as build
+WORKDIR /app
 COPY . .
+RUN ./mvnw clean package -DskipTests
 
-RUN apt-get install maven -y
-RUN mvn clean install
-
-FROM openjdk:17-jdk-alpine
-
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/futdelas-api-*.jar app.jar
 EXPOSE 8080
-
-COPY --from=build /target/futdelas_api-1.0.0.jar app.jar
-
-ENTRYPOINT [ "java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
