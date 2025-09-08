@@ -26,7 +26,7 @@ public class TournamentController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/logo", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/logo", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public CompletableFuture<byte[]> getTournamentLogo() {
         return tournamentService.searchTournamentLogo();
     }
