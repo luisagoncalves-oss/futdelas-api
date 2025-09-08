@@ -1,6 +1,7 @@
 package br.edu.ifb.tcc.futdelas_api.application.services;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,15 +36,23 @@ public class TeamsService {
     }
 
     public CompletableFuture<byte[]> searchTeamLogo(Long teamId) {
-        log.info("Buscando detalhes do time");
+        log.info("Buscando logo do time");
         
         return sofascoreClient.getTeamLogoAsync(teamId)
-            .whenComplete((response, throwable) -> {
+            .handle((response, throwable) -> {
                 if (throwable != null) {
-                    log.error("Erro ao buscar time: {}", throwable.getMessage());
+                    log.error("Erro ao buscar logo do time: {}", throwable.getMessage());
+                    
+                    try {
+                        Thread.sleep(1000);
+                        return sofascoreClient.getTeamLogoAsync(teamId).get(10, TimeUnit.SECONDS);
+                    } catch (Exception e) {
+                        log.error("Segunda tentativa falhou: {}", e.getMessage());
+                        return new byte[0];
+                    }
                 } else {
-                    log.info("Detalhes do time obtidos com sucesso");
-                    log.debug("Resposta: {}", response);
+                    log.info("Logo do time obtida com sucesso");
+                    return response;
                 }
             });
     }

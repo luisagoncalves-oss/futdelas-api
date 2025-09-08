@@ -86,6 +86,11 @@ public class SofaScoreClient {
                 .path("/teams/get-logo")
                 .queryParam("teamId", teamId)
                 .build())
+            .headers(headers -> {
+               headers.set("User-Agent", "FutdelasApp/1.0 (Football Data Client)");
+               headers.set("Accept", "image/*");
+            headers.set("Connection", "close");
+            })
             .retrieve()
             .bodyToMono(byte[].class)
             .toFuture();
