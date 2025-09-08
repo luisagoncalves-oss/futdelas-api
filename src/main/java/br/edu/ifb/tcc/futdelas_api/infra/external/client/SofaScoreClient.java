@@ -31,14 +31,14 @@ public class SofaScoreClient {
             .toFuture();
     }
 
-    public CompletableFuture<String> getTournamentLogoAsync() {
+    public CompletableFuture<byte[]> getTournamentLogoAsync() {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/tournaments/get-logo")
                 .queryParam("tournamentId", 10257)
                 .build())
             .retrieve()
-            .bodyToMono(String.class)
+            .bodyToMono(byte[].class)
             .toFuture();
     }
 
@@ -80,14 +80,14 @@ public class SofaScoreClient {
             .toFuture();
     }
 
-    public CompletableFuture<String> getTeamLogoAsync(Long teamId) {
+    public CompletableFuture<byte[]> getTeamLogoAsync(Long teamId) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/teams/get-logo")
                 .queryParam("teamId", teamId)
                 .build())
             .retrieve()
-            .bodyToMono(String.class)
+            .bodyToMono(byte[].class)
             .toFuture();
     }
 

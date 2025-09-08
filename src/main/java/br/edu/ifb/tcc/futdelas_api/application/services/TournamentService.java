@@ -35,7 +35,7 @@ public class TournamentService {
             });
     }
 
-    public CompletableFuture<String> searchTournamentLogo() {
+    public CompletableFuture<byte[]> searchTournamentLogo() {
         log.info("Buscando logo do torneio");
         
         return sofascoreClient.getTournamentLogoAsync()

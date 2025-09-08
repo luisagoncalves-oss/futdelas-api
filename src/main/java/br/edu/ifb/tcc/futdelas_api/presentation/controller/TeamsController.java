@@ -3,6 +3,7 @@ package br.edu.ifb.tcc.futdelas_api.presentation.controller;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +27,9 @@ public class TeamsController {
         return teamsService.searchTeamDetails(teamId);
     }
 
+    @CrossOrigin 
     @GetMapping(value = "/{teamId}/logo", produces = MediaType.IMAGE_PNG_VALUE)
-    public CompletableFuture<String> getTeamLogo(@PathVariable("teamId") Long teamId) {
+    public CompletableFuture<byte[]> getTeamLogo(@PathVariable("teamId") Long teamId) {
         return teamsService.searchTeamLogo(teamId);
     }
 

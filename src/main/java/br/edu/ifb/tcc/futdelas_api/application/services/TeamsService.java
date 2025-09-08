@@ -34,7 +34,7 @@ public class TeamsService {
             });
     }
 
-    public CompletableFuture<String> searchTeamLogo(Long teamId) {
+    public CompletableFuture<byte[]> searchTeamLogo(Long teamId) {
         log.info("Buscando detalhes do time");
         
         return sofascoreClient.getTeamLogoAsync(teamId)
