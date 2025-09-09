@@ -1,5 +1,6 @@
 package br.edu.ifb.tcc.futdelas_api.infra.external.client;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -50,6 +51,7 @@ public class SofaScoreClient {
                 .queryParam("seasonId", 73097)
                 .queryParam("type", "total")
                 .build())
+            .accept(MediaType.IMAGE_PNG)
             .retrieve()
             .bodyToMono(TournamentStandingsResponse.class)
             .toFuture();
@@ -86,11 +88,6 @@ public class SofaScoreClient {
                 .path("/teams/get-logo")
                 .queryParam("teamId", teamId)
                 .build())
-            .headers(headers -> {
-               headers.set("User-Agent", "FutdelasApp/1.0 (Football Data Client)");
-               headers.set("Accept", "image/*");
-            headers.set("Connection", "close");
-            })
             .retrieve()
             .bodyToMono(byte[].class)
             .toFuture();

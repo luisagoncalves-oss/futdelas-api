@@ -19,7 +19,6 @@ public class SofaScoreApiConfig {
             .baseUrl(properties.getBaseUrl())
             .defaultHeader("X-RapidAPI-Key", properties.getApiKey())
             .defaultHeader("X-RapidAPI-Host", properties.getApiHost())
-            .defaultHeader("Accept", "application/json")
             .build();
     }
 }
