@@ -51,7 +51,6 @@ public class SofaScoreClient {
                 .queryParam("seasonId", 73097)
                 .queryParam("type", "total")
                 .build())
-            .accept(MediaType.IMAGE_PNG)
             .retrieve()
             .bodyToMono(TournamentStandingsResponse.class)
             .toFuture();
