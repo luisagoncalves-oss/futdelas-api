@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.ifb.tcc.futdelas_api.application.services.TeamsService;
@@ -34,7 +35,7 @@ public class TeamsController {
     }
 
     @GetMapping(value = "/{teamId}/next-matches", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatches(@PathVariable("teamId") Long teamId) {
-        return teamsService.searchTeamNextMatches(teamId);
+    public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatches(@PathVariable("teamId") Long teamId, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex) {
+        return teamsService.searchTeamNextMatches(teamId, pageIndex);
     }
 }

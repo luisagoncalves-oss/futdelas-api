@@ -37,7 +37,7 @@ public class TournamentController {
     }
 
     @GetMapping(value = "/last-matches", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CompletableFuture<TournamentLastMatchesResponse> getTournamentLastMatches(Integer pageIndex) {
+    public CompletableFuture<TournamentLastMatchesResponse> getTournamentLastMatches(@RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex) {
         return tournamentService.searchTournamentLastMatches(pageIndex);
     }
 }

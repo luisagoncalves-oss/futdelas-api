@@ -49,10 +49,10 @@ public class TeamsService {
             });
     }
 
-    public CompletableFuture<TeamNextMatchesResponse> searchTeamNextMatches(Long teamId) {
+    public CompletableFuture<TeamNextMatchesResponse> searchTeamNextMatches(Long teamId, Integer pageIndex) {
         log.info("Buscando próximas partidas do time");
         
-        return sofascoreClient.getTeamNextMatchesAsync(teamId)
+        return sofascoreClient.getTeamNextMatchesAsync(teamId, pageIndex)
             .whenComplete((response, throwable) -> {
                 if (throwable != null) {
                     log.error("Erro ao buscar próximas partidas do time: {}", throwable.getMessage());

@@ -68,12 +68,12 @@ public class SofaScoreClient {
             .toFuture();
     }
 
-    public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatchesAsync(Long teamId) {
+    public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatchesAsync(Long teamId, Integer pageIndex) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/teams/next-matches")
                 .queryParam("teamId", teamId)
-                .queryParam("pageIndex", 0)
+                .queryParam("pageIndex", pageIndex)
                 .build())
             .retrieve()
             .bodyToMono(TeamNextMatchesResponse.class)
