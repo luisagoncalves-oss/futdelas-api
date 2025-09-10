@@ -17,7 +17,7 @@ public class SofaScoreApiConfig {
     public WebClient sofascoreWebClient() {
         return WebClient.builder()
             .baseUrl(properties.getBaseUrl())
-            // .defaultHeader("X-RapidAPI-Key", properties.getApiKey())
+            .defaultHeader("X-RapidAPI-Key", properties.getApiKey())
             .defaultHeader("X-RapidAPI-Host", properties.getApiHost())
             .build();
     }
