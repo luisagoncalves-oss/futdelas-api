@@ -42,14 +42,6 @@ public class TeamsService {
             .handle((response, throwable) -> {
                 if (throwable != null) {
                     log.error("Erro ao buscar logo do time: {}", throwable.getMessage());
-                    
-                    try {
-                        Thread.sleep(1000);
-                        return sofascoreClient.getTeamLogoAsync(teamId).get(10, TimeUnit.SECONDS);
-                    } catch (Exception e) {
-                        log.error("Segunda tentativa falhou: {}", e.getMessage());
-                        return new byte[0];
-                    }
                 } else {
                     log.info("Logo do time obtida com sucesso");
                     return response;
