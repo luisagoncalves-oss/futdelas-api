@@ -46,6 +46,7 @@ public class TeamsService {
                     log.info("Logo do time obtida com sucesso");
                     return response;
                 }
+                return response;
             });
     }
 
