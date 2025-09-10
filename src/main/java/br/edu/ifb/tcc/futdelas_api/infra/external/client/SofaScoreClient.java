@@ -24,7 +24,7 @@ public class SofaScoreClient {
     public CompletableFuture<TournamentDetailResponse> getTournamentDetailsAsync() {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/detail")
+                .path("/tournaments/details")
                 .queryParam("tournamentId", 10257)
                 .build())
             .retrieve()
@@ -35,7 +35,7 @@ public class SofaScoreClient {
     public CompletableFuture<byte[]> getTournamentLogoAsync() {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/get-logo")
+                .path("/tournaments/logo")
                 .queryParam("tournamentId", 10257)
                 .build())
             .retrieve()
@@ -46,7 +46,7 @@ public class SofaScoreClient {
     public CompletableFuture<TournamentStandingsResponse> getTournamentStandingsAsync(){
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/get-standings")
+                .path("/tournaments/standings")
                 .queryParam("tournamentId", 10257)
                 .queryParam("seasonId", 73097)
                 .queryParam("type", "total")
@@ -59,7 +59,7 @@ public class SofaScoreClient {
     public CompletableFuture<TournamentLastMatchesResponse> getTournamentLastMatchesAsync(Integer pageIndex){
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/get-last-matches")
+                .path("/tournaments/last-matches")
                 .queryParam("tournamentId", 10257)
                 .queryParam("seasonId", 73097)
                 .queryParam("pageIndex", pageIndex)
@@ -72,7 +72,7 @@ public class SofaScoreClient {
     public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatchesAsync(Long teamId) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/teams/get-next-matches")
+                .path("/teams/next-matches")
                 .queryParam("teamId", teamId)
                 .queryParam("pageIndex", 0)
                 .build())
@@ -84,7 +84,7 @@ public class SofaScoreClient {
     public CompletableFuture<byte[]> getTeamLogoAsync(Long teamId) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/teams/get-logo")
+                .path("/teams/logo")
                 .queryParam("teamId", teamId)
                 .build())
             .retrieve()
@@ -95,7 +95,7 @@ public class SofaScoreClient {
     public CompletableFuture<TeamDetailsResponse> getTeamDetailsAsync(Long teamId) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/teams/detail")
+                .path("/teams/details")
                 .queryParam("teamId", teamId)
                 .build())
             .retrieve()
