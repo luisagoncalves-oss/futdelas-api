@@ -1,6 +1,6 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 
