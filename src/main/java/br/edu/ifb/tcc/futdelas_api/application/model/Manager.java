@@ -8,11 +8,6 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class Manager {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false, length = 100)
     private String name;
 }
