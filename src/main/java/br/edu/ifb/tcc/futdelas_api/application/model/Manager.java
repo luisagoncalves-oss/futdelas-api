@@ -1,13 +1,21 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Embeddable
+@Entity
+@Table(name = "managers")
+@NoArgsConstructor
 public class Manager {
-   private Long id;
-   private String name; 
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false, length = 100)
+    private String name;
 }

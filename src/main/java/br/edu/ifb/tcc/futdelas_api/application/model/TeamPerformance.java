@@ -1,6 +1,7 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
 
@@ -10,6 +11,7 @@ import jakarta.persistence.Table;
 @Setter
 @Entity
 @Table(name = "team_performance")
+@NoArgsConstructor
 public class TeamPerformance {
     
     @Id

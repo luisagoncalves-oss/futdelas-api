@@ -1,6 +1,7 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import jakarta.persistence.CascadeType;
@@ -20,6 +21,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "teams")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
 public class Team {
     
     @Id

@@ -1,13 +1,15 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Embeddable
+@Entity(name = "team_colors")
+@NoArgsConstructor
 public class TeamColors {
     
     @Column(name = "primary_color", length = 20)
