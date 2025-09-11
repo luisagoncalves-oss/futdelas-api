@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -32,8 +34,17 @@ public class Team {
     private String nameCode;
     
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "primary", column = @Column(name = "primary_color", length = 20)),
+        @AttributeOverride(name = "secondary", column = @Column(name = "secondary_color", length = 20)),
+        @AttributeOverride(name = "text", column = @Column(name = "text_color", length = 20))
+    })
     private TeamColors teamColors;
     
     @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "manager_id")),
+        @AttributeOverride(name = "name", column = @Column(name = "manager_name", length = 100))
+    })
     private Manager manager;
 }
