@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
 @Embeddable
 public class Manager {
     
