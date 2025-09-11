@@ -1,11 +1,13 @@
 package br.edu.ifb.tcc.futdelas_api.application.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifb.tcc.futdelas_api.application.model.Standing;
@@ -70,6 +72,20 @@ public class TeamsService {
                     log.debug("Resposta: {}", response);
                 }
             });
+    }
+
+    public List<Team> findAllTeams() {
+        try {
+            List<Team> listOfTeams = teamRepository.findAll();
+            log.info("Times recuperados com sucesso. Total: {}", listOfTeams.size());
+            return listOfTeams;
+        } catch (DataAccessException ex) {
+            log.warn("Erro de acesso aos dados ao buscar times, retornando lista vazia: {}", ex.getMessage());
+            return Collections.emptyList();
+        } catch (Exception ex) {
+            log.error("Erro inesperado ao listar times, retornando lista vazia: {}", ex.getMessage(), ex);
+            return Collections.emptyList();
+        }
     }
 
     @Transactional

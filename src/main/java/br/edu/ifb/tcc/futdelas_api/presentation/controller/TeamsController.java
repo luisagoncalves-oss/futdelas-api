@@ -1,5 +1,6 @@
 package br.edu.ifb.tcc.futdelas_api.presentation.controller;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ifb.tcc.futdelas_api.application.model.Team;
 import br.edu.ifb.tcc.futdelas_api.application.services.TeamsService;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamDetailsResponse;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamNextMatchesResponse;
@@ -37,5 +39,10 @@ public class TeamsController {
     @GetMapping(value = "/{teamId}/next-matches", produces = MediaType.APPLICATION_JSON_VALUE)
     public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatches(@PathVariable("teamId") Long teamId, @RequestParam(value = "pageIndex", defaultValue = "0") Integer pageIndex) {
         return teamsService.searchTeamNextMatches(teamId, pageIndex);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Team> getAllTeams() {
+        return teamsService.findAllTeams();
     }
 }
