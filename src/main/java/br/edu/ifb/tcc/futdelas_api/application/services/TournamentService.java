@@ -1,6 +1,7 @@
 package br.edu.ifb.tcc.futdelas_api.application.services;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.edu.ifb.tcc.futdelas_api.infra.external.client.SofaScoreClient;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TournamentDetailResponse;
@@ -16,9 +17,12 @@ public class TournamentService {
     private static final Logger log = LoggerFactory.getLogger(TournamentService.class);
     
     private final SofaScoreClient sofascoreClient;
+    private final TeamsService teamsService;
+    private final AtomicBoolean teamsSaved = new AtomicBoolean(false);
 
-    public TournamentService(SofaScoreClient sofascoreClient) {
+    public TournamentService(SofaScoreClient sofascoreClient, TeamsService teamsService) {
         this.sofascoreClient = sofascoreClient;
+        this.teamsService = teamsService;
     }
 
     public CompletableFuture<TournamentDetailResponse> searchTournamentDetails() {
@@ -55,10 +59,9 @@ public class TournamentService {
         return sofascoreClient.getTournamentStandingsAsync()
             .whenComplete((response, throwable) -> {
                 if (throwable != null) {
-                    log.error("Erro ao buscar classificação do torneio: {}", throwable.getMessage());
+                    log.error("Erro ao buscar classificação do torneio: {}", throwable.getMessage());     
                 } else {
-                    log.info("Classificação do torneio obtida com sucesso");
-                    log.debug("Resposta: {}", response);
+                    handleSuccessfulResponse(response);
                 }
             });
     }
@@ -75,5 +78,26 @@ public class TournamentService {
                     log.debug("Resposta: {}", response);
                 }
             });
+    }
+
+    private void handleSuccessfulResponse(TournamentStandingsResponse response) {
+        log.info("Classificação do torneio obtida com sucesso");
+        log.debug("Resposta: {}", response);
+        
+        saveTeamsIfFirstTime(response);
+    }
+    
+    private void saveTeamsIfFirstTime(TournamentStandingsResponse response) {
+        if (teamsSaved.compareAndSet(false, true)) {
+            try {
+                teamsService.saveTeamsFromStandings(response.getStandings());
+                log.info("Times salvos com sucesso na base de dados (primeira vez)");
+            } catch (Exception e) {
+                log.warn("Erro ao salvar times na base de dados: {}", e.getMessage());
+                teamsSaved.set(false);
+            }
+        } else {
+            log.debug("Times já foram salvos anteriormente");
+        }
     }
 }
