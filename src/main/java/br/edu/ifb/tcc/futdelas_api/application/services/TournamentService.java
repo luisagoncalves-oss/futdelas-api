@@ -131,6 +131,6 @@ public class TournamentService {
     }
 
     private boolean isValidTeam(Team team) {
-        return team != null && team.getId() != null;
+        return team != null && team.getName() != null && !team.getName().isBlank();
     }
 }

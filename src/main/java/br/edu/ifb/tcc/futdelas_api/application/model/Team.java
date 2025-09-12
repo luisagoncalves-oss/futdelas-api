@@ -23,11 +23,10 @@ import jakarta.persistence.Table;
 public class Team {
     
     @Id
-    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, unique=true)
     private String name;
     
     @Column(name = "name_code", length = 10)

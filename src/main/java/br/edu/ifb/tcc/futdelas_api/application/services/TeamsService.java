@@ -2,6 +2,7 @@ package br.edu.ifb.tcc.futdelas_api.application.services;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -88,14 +89,23 @@ public class TeamsService {
     @Transactional
     public void syncTeamsFromAPI(List<Team> teamsFromAPI) {
         log.info("Sincronizando {} times da API externa", teamsFromAPI.size());
-        
+
         teamsFromAPI.forEach(this::upsertTeam);
-        
+
         log.info("Sincronização concluída com sucesso");
     }
-    
+
     private void upsertTeam(Team team) {
-        Team savedTeam = teamRepository.save(team);
-        log.debug("Team processado: {} - {}", savedTeam.getId(), savedTeam.getName());
+        Optional<Team> existing = teamRepository.findByName(team.getName());
+        if (existing.isPresent()) {
+            Team dbTeam = existing.get();
+            dbTeam.setNameCode(team.getNameCode());
+            dbTeam.setTeamColors(team.getTeamColors());
+            dbTeam.setManager(team.getManager());
+            teamRepository.save(dbTeam);
+        } else {
+            teamRepository.save(team);
+        }
     }
+
 }
