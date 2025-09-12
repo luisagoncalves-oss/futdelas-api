@@ -16,6 +16,7 @@ import lombok.*;
        uniqueConstraints = @UniqueConstraint(columnNames = {"anonymous_user_id"}))
 public class FavoriteTeam {
    
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "favorite_team_id", unique = true)
     private UUID favoriteTeamId;
