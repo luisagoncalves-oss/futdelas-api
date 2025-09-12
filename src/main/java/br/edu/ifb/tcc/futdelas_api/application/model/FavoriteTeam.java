@@ -3,8 +3,6 @@ package br.edu.ifb.tcc.futdelas_api.application.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.UuidGenerator;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +17,8 @@ import lombok.*;
 public class FavoriteTeam {
     
     @Id
-    @UuidGenerator
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     
     @Column(name = "anonymous_user_id", nullable = false, unique = true)
     private String anonymousUserId;
@@ -36,9 +34,6 @@ public class FavoriteTeam {
     
     @PrePersist
     protected void onCreate() {
-        if (id == null) {
-            id = UUID.randomUUID();
-        }
         createdAt = LocalDateTime.now();
         isFavorite = true;
     }
