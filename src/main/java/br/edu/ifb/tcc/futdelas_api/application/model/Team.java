@@ -25,10 +25,10 @@ public class Team {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID teamId;
 
     @Column(name = "team_id_api", nullable = false)
-    private Long teamIdApi;
+    private String id;
     
     @Column(nullable = false, length = 100)
     private String name;
