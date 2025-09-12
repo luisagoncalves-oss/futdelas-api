@@ -1,7 +1,15 @@
 package br.edu.ifb.tcc.futdelas_api.application.services;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import br.edu.ifb.tcc.futdelas_api.application.model.Standing;
+import br.edu.ifb.tcc.futdelas_api.application.model.Team;
+import br.edu.ifb.tcc.futdelas_api.application.model.TeamPerformance;
 import br.edu.ifb.tcc.futdelas_api.infra.external.client.SofaScoreClient;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TournamentDetailResponse;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TournamentLastMatchesResponse;
@@ -87,9 +95,42 @@ public class TournamentService {
         log.info("Classificação do torneio obtida com sucesso");
 
         try {
-            teamsService.saveTeamsFromStandings(response.getStandings());
+            List<Team> teams = extractTeamsFromStandings(response.getStandings());
+            teamsService.syncTeamsFromAPI(teams);
         } catch (Exception e) {
             log.warn("Erro ao salvar times (não crítico): {}", e.getMessage());
         }
+    }
+
+    private List<Team> extractTeamsFromStandings(List<Standing> standings) {
+        if (standings == null || standings.isEmpty()) {
+            log.warn("Nenhum standing fornecido para extrair times");
+            return Collections.emptyList();
+        }
+
+        List<Team> teams = standings.stream()
+                .filter(Objects::nonNull)
+                .flatMap(this::extractTeamsFromStanding)
+                .filter(this::isValidTeam)
+                .distinct()
+                .collect(Collectors.toList());
+
+        log.info("Extraídos {} times únicos dos standings", teams.size());
+        return teams;
+    }
+
+    private Stream<Team> extractTeamsFromStanding(Standing standing) {
+        if (standing.getTeamsPerformance() == null) {
+            return Stream.empty();
+        }
+        
+        return standing.getTeamsPerformance().stream()
+                .filter(Objects::nonNull)
+                .map(TeamPerformance::getTeam)
+                .filter(Objects::nonNull);
+    }
+
+    private boolean isValidTeam(Team team) {
+        return team != null && team.getId() != null;
     }
 }
