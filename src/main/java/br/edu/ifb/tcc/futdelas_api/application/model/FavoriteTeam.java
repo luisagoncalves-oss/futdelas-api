@@ -1,7 +1,6 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +23,7 @@ public class FavoriteTeam {
     private String anonymousUserId;
     
     @Column(name = "team_id", nullable = false)
-    private UUID teamId;
+    private Long teamId;
     
     @Column(name = "is_favorite")
     private boolean isFavorite;
