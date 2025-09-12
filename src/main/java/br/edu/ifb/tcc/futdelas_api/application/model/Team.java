@@ -3,7 +3,6 @@ package br.edu.ifb.tcc.futdelas_api.application.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.EqualsAndHashCode;
 
 import java.util.UUID;
 

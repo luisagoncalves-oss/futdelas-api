@@ -26,7 +26,7 @@ public class FavoriteTeam {
     private String anonymousUserId;
     
     @Column(name = "team_id", nullable = false)
-    private Long teamId;
+    private UUID teamId;
     
     @Column(name = "is_favorite")
     private boolean isFavorite;

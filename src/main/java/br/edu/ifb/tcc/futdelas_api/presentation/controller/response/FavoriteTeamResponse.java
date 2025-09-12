@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FavoriteTeamResponse {
     private UUID id;
-    private Long teamId;
+    private UUID teamId;
     private boolean isFavorite;
 
     public static FavoriteTeamResponse from(FavoriteTeam savedFavoriteTeam) {
