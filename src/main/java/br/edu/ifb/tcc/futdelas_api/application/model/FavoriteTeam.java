@@ -1,6 +1,7 @@
 package br.edu.ifb.tcc.futdelas_api.application.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,10 +15,10 @@ import lombok.*;
 @Table(name = "favorite_teams", 
        uniqueConstraints = @UniqueConstraint(columnNames = {"anonymous_user_id"}))
 public class FavoriteTeam {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+   
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "favorite_team_id", unique = true)
+    private UUID favoriteTeamId;
     
     @Column(name = "anonymous_user_id", nullable = false, unique = true)
     private String anonymousUserId;

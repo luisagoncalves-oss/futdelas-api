@@ -11,7 +11,6 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Getter
@@ -21,17 +20,17 @@ import jakarta.persistence.Table;
 @NoArgsConstructor
 public class Team {
     
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="team_id")
     private Long teamId;
 
-    @Column(name = "id_api", length = 10)
+    @Column(name = "id_api")
     private Long id;
     
     @Column(nullable = false, length = 100)
     private String name;
     
-    @Column(name = "name_code", length = 10)
+    @Column(name = "name_code")
     private String nameCode;
     
     @Embedded
