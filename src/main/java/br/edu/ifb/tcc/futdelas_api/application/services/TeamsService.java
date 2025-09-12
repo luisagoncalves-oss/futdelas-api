@@ -2,10 +2,11 @@ package br.edu.ifb.tcc.futdelas_api.application.services;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamNextMatc
 @Service
 public class TeamsService {
     private static final Logger log = LoggerFactory.getLogger(TeamsService.class);
+    private static final int BATCH_SIZE = 5;
 
     private final SofaScoreClient sofascoreClient;
     private final TeamRepository teamRepository;
@@ -92,71 +94,88 @@ public class TeamsService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, 
-               isolation = Isolation.READ_COMMITTED)
     public void saveTeamsFromStandings(List<Standing> standings) {
-        if (standings == null || standings.isEmpty()) {
-            log.warn("Nenhum standing fornecido para salvar times");
+        if (isInvalidInput(standings)) {
+            log.warn("Nenhum standing válido fornecido");
             return;
         }
 
-        try {
-            List<Team> teamsToProcess = extractUniqueTeamsFromStandings(standings);
-
-            if (teamsToProcess.isEmpty()) {
-                log.info("Nenhum team válido encontrado nos standings");
-                return;
-            }
-
-            log.info("Processando {} times para salvamento", teamsToProcess.size());
-
-            processTeamsInBatch(teamsToProcess);
-
-        } catch (Exception e) {
-            log.error("Erro crítico ao processar teams: {}", e.getMessage(), e);
-            throw e;
+        List<Team> uniqueTeams = extractUniqueTeams(standings);
+        
+        if (uniqueTeams.isEmpty()) {
+            log.info("Nenhum team válido encontrado nos standings");
+            return;
         }
+
+        log.info("Processando {} times em lotes de {}", uniqueTeams.size(), BATCH_SIZE);
+        processTeamsInBatches(uniqueTeams);
     }
 
-    private void processTeamsInBatch(List<Team> teamsToProcess) {
-        int batchSize = 50;
-        for (int i = 0; i < teamsToProcess.size(); i += batchSize) {
-            List<Team> batch = teamsToProcess.subList(i,
-                    Math.min(i + batchSize, teamsToProcess.size()));
-            processBatch(batch);
-        }
+    private boolean isInvalidInput(List<Standing> standings) {
+        return standings == null || standings.isEmpty();
     }
 
-    private void processBatch(List<Team> batch) {
-        List<Long> teamIds = batch.stream()
-                .map(Team::getId)
+    private List<Team> extractUniqueTeams(List<Standing> standings) {
+        return standings.stream()
+                .filter(Objects::nonNull)
+                .flatMap(this::extractTeamsFromStanding)
+                .filter(this::isValidTeam)
+                .distinct()
                 .collect(Collectors.toList());
+    }
 
-        Map<Long, Team> existingTeamsMap = teamRepository.findAllById(teamIds)
-                .stream()
-                .collect(Collectors.toMap(Team::getId, team -> team));
+    private Stream<Team> extractTeamsFromStanding(Standing standing) {
+        if (standing.getTeamsPerformance() == null) {
+            return Stream.empty();
+        }
+        
+        return standing.getTeamsPerformance().stream()
+                .filter(Objects::nonNull)
+                .map(TeamPerformance::getTeam)
+                .filter(Objects::nonNull);
+    }
 
-        for (Team newTeam : batch) {
-            try {
-                Team existingTeam = existingTeamsMap.get(newTeam.getId());
-                if (existingTeam != null) {
-                    updateTeamIfNeeded(existingTeam, newTeam);
-                } else {
-                    saveNewTeam(newTeam);
-                }
-            } catch (Exception e) {
-                log.warn("Erro ao processar team {} ({}): {}",
-                        newTeam.getId(), newTeam.getName(), e.getMessage());
-            }
+    private boolean isValidTeam(Team team) {
+        return team != null && team.getId() != null;
+    }
+
+    private void processTeamsInBatches(List<Team> teams) {
+        for (int i = 0; i < teams.size(); i += BATCH_SIZE) {
+            int endIndex = Math.min(i + BATCH_SIZE, teams.size());
+            List<Team> batch = teams.subList(i, endIndex);
+            processBatchInSeparateTransaction(batch);
         }
     }
 
-    private void updateTeamIfNeeded(Team existingTeam, Team newTeam) {
-        if (hasTeamChanged(existingTeam, newTeam)) {
-            updateTeamData(existingTeam, newTeam);
-            teamRepository.save(existingTeam);
-            log.debug("Team atualizado: {} - {}", existingTeam.getId(), existingTeam.getName());
+    @Transactional(propagation = Propagation.REQUIRES_NEW, 
+                   isolation = Isolation.READ_COMMITTED)
+    public void processBatchInSeparateTransaction(List<Team> batch) {
+        batch.forEach(this::processTeam);
+    }
+
+    private void processTeam(Team newTeam) {
+        try {
+            Optional<Team> existingTeamOpt = teamRepository.findById(newTeam.getId());
+            
+            if (existingTeamOpt.isPresent()) {
+                updateExistingTeam(existingTeamOpt.get(), newTeam);
+            } else {
+                saveNewTeam(newTeam);
+            }
+        } catch (Exception e) {
+            log.warn("Erro ao processar team {} ({}): {}", 
+                    newTeam.getId(), newTeam.getName(), e.getMessage());
         }
+    }
+
+    private void updateExistingTeam(Team existingTeam, Team newTeam) {
+        if (!hasTeamChanged(existingTeam, newTeam)) {
+            return;
+        }
+
+        updateTeamFields(existingTeam, newTeam);
+        teamRepository.save(existingTeam);
+        log.debug("Team atualizado: {} - {}", existingTeam.getId(), existingTeam.getName());
     }
 
     private void saveNewTeam(Team team) {
@@ -166,26 +185,15 @@ public class TeamsService {
 
     private boolean hasTeamChanged(Team existing, Team newTeam) {
         return !Objects.equals(existing.getName(), newTeam.getName()) ||
-                !Objects.equals(existing.getNameCode(), newTeam.getNameCode()) ||
-                !Objects.equals(existing.getTeamColors(), newTeam.getTeamColors()) ||
-                !Objects.equals(existing.getManager(), newTeam.getManager());
+               !Objects.equals(existing.getNameCode(), newTeam.getNameCode()) ||
+               !Objects.equals(existing.getTeamColors(), newTeam.getTeamColors()) ||
+               !Objects.equals(existing.getManager(), newTeam.getManager());
     }
 
-    private void updateTeamData(Team existing, Team newTeam) {
+    private void updateTeamFields(Team existing, Team newTeam) {
         existing.setName(newTeam.getName());
         existing.setNameCode(newTeam.getNameCode());
         existing.setTeamColors(newTeam.getTeamColors());
         existing.setManager(newTeam.getManager());
-    }
-
-    private List<Team> extractUniqueTeamsFromStandings(List<Standing> standings) {
-        return standings.stream()
-                .filter(Objects::nonNull)
-                .flatMap(standing -> standing.getTeamsPerformance().stream())
-                .filter(Objects::nonNull)
-                .map(TeamPerformance::getTeam)
-                .filter(team -> team != null && team.getId() != null)
-                .distinct()
-                .collect(Collectors.toList());
     }
 }

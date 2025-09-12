@@ -51,19 +51,6 @@ public class TournamentService {
                 });
     }
 
-    public CompletableFuture<TournamentStandingsResponse> searchTournamentStandings() {
-        log.info("Buscando classificação do torneio");
-
-        return sofascoreClient.getTournamentStandingsAsync()
-                .whenComplete((response, throwable) -> {
-                    if (throwable != null) {
-                        log.error("Erro ao buscar classificação do torneio: {}", throwable.getMessage());
-                        return;
-                    }
-                    handleSuccessfulResponse(response);
-                });
-    }
-
     public CompletableFuture<TournamentLastMatchesResponse> searchTournamentLastMatches(Integer pageIndex) {
         log.info("Buscando partidas do torneio");
 
@@ -76,6 +63,24 @@ public class TournamentService {
                         log.debug("Resposta: {}", response);
                     }
                 });
+    }
+
+    public CompletableFuture<TournamentStandingsResponse> searchTournamentStandings() {
+        log.info("Buscando classificação do torneio");
+
+        return sofascoreClient.getTournamentStandingsAsync()
+                .whenComplete(this::handleResponse);
+    }
+
+    private void handleResponse(TournamentStandingsResponse response, Throwable throwable) {
+        if (throwable != null) {
+            log.error("Erro ao buscar classificação do torneio: {}", throwable.getMessage());
+            return;
+        }
+        
+        if (response != null && response.getStandings() != null) {
+            handleSuccessfulResponse(response);
+        }
     }
 
     private void handleSuccessfulResponse(TournamentStandingsResponse response) {
