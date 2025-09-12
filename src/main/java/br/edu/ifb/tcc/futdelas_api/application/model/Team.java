@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
+
+import java.util.UUID;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -18,15 +21,17 @@ import jakarta.persistence.Table;
 @Setter
 @Entity
 @Table(name = "teams")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 public class Team {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID teamId;
+
+    @Column(name = "id_api", length = 10)
     private Long id;
     
-    @Column(nullable = false, length = 100, unique=true)
+    @Column(nullable = false, length = 100)
     private String name;
     
     @Column(name = "name_code", length = 10)

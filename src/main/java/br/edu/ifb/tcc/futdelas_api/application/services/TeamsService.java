@@ -99,6 +99,8 @@ public class TeamsService {
         Optional<Team> existing = teamRepository.findByName(team.getName());
         if (existing.isPresent()) {
             Team dbTeam = existing.get();
+            dbTeam.setId(team.getId());
+            dbTeam.setName(team.getName());
             dbTeam.setNameCode(team.getNameCode());
             dbTeam.setTeamColors(team.getTeamColors());
             dbTeam.setManager(team.getManager());
