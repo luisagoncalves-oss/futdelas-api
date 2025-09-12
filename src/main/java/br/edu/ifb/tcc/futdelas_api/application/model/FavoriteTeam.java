@@ -18,7 +18,8 @@ public class FavoriteTeam {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "favorite_team_id")
+    private Long favoriteTeamId;
     
     @Column(name = "anonymous_user_id", nullable = false, unique = true)
     private String anonymousUserId;

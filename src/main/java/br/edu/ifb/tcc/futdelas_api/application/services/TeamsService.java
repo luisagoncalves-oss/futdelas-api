@@ -100,6 +100,7 @@ public class TeamsService {
         if (existing.isPresent()) {
             Team dbTeam = existing.get();
             dbTeam.setId(team.getId());
+            dbTeam.setTeamIdApi(team.getTeamIdApi());
             dbTeam.setName(team.getName());
             dbTeam.setNameCode(team.getNameCode());
             dbTeam.setTeamColors(team.getTeamColors());
