@@ -15,17 +15,16 @@ import lombok.*;
 @Table(name = "favorite_teams", 
        uniqueConstraints = @UniqueConstraint(columnNames = {"anonymous_user_id"}))
 public class FavoriteTeam {
-   
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "favorite_team_id", unique = true)
-    private UUID favoriteTeamId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     
     @Column(name = "anonymous_user_id", nullable = false, unique = true)
     private String anonymousUserId;
     
     @Column(name = "team_id", nullable = false)
-    private Long teamId;
+    private UUID teamId;
     
     @Column(name = "is_favorite")
     private boolean isFavorite;

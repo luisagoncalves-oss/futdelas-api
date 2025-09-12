@@ -13,14 +13,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FavoriteTeamResponse {
-    private UUID favoriteTeamId;
-    private Long teamId;
+    private Long id;
+    private UUID teamId;
     private boolean isFavorite;
 
     public static FavoriteTeamResponse from(FavoriteTeam savedFavoriteTeam) {
         FavoriteTeamResponse response = new FavoriteTeamResponse();
         
-        response.setFavoriteTeamId(savedFavoriteTeam.getFavoriteTeamId());
+        response.setId(savedFavoriteTeam.getId());
         response.setTeamId(savedFavoriteTeam.getTeamId());
         response.setFavorite(true);
         

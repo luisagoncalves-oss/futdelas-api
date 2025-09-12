@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -20,19 +22,18 @@ import jakarta.persistence.Table;
 @Table(name = "teams")
 @NoArgsConstructor
 public class Team {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="team_id")
-    private Long teamId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID teamId;
 
-    @Column(name = "id_api")
+    @Column(name = "id_api", length = 10)
     private Long id;
     
     @Column(nullable = false, length = 100)
     private String name;
     
-    @Column(name = "name_code")
+    @Column(name = "name_code", length = 10)
     private String nameCode;
     
     @Embedded
