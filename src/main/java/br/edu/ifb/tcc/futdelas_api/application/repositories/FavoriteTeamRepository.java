@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import br.edu.ifb.tcc.futdelas_api.application.model.FavoriteTeam;
 
 @Repository
-public interface FavoriteTeamRepository extends JpaRepository<FavoriteTeam, UUID> {
+public interface FavoriteTeamRepository extends JpaRepository<FavoriteTeam, Long> {
     boolean existsByAnonymousUserId(String anonymousUserId);
     Optional<FavoriteTeam> findByAnonymousUserId(String anonymousUserId);
     void deleteById(UUID id);
