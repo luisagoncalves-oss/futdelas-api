@@ -24,7 +24,7 @@ public class FavoriteTeam {
     @Column(name = "anonymous_user_id", nullable = false, unique = true)
     private String anonymousUserId;
     
-    @Column(name = "team_id", nullable = false)
+    @Column(name = "team_id", nullable = false, columnDefinition = "UUID")
     private UUID teamId;
     
     @Column(name = "is_favorite")
