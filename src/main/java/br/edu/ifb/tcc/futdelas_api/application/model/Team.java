@@ -15,13 +15,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "favorite_teams", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"anonymous_user_id"}))
+@Table(name = "teams")
 @NoArgsConstructor
 public class Team {
     
