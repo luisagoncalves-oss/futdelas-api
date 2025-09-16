@@ -3,6 +3,7 @@ package br.edu.ifb.tcc.futdelas_api.presentation.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +34,11 @@ public class FavoriteTeamController {
     public ResponseEntity<Void> deleteFavoriteTeam(@PathVariable String userId) {
         favoriteTeamService.deleteFavoriteTeam(userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/exists/{userId}")
+    public ResponseEntity<Boolean> favoriteTeamExists(@PathVariable String userId){
+        Boolean response = favoriteTeamService.verifyIfFavoriteTeamExists(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
