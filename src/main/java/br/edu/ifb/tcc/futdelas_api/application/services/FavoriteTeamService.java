@@ -61,4 +61,10 @@ public class FavoriteTeamService {
     public boolean verifyIfFavoriteTeamExists(String anonymousUserId) {
         return repository.existsByAnonymousUserId(anonymousUserId);
     }
+
+    public FavoriteTeamResponse fetchFavoriteTeam(String userId) {
+    return repository.findByAnonymousUserId(userId)
+            .map(FavoriteTeamResponse::from)
+            .orElseThrow();
+    }
 }

@@ -41,4 +41,10 @@ public class FavoriteTeamController {
         Boolean response = favoriteTeamService.verifyIfFavoriteTeamExists(userId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<FavoriteTeamResponse> getFavoriteTeam(@PathVariable String userId){
+        FavoriteTeamResponse response = favoriteTeamService.fetchFavoriteTeam(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
