@@ -15,7 +15,6 @@ import br.edu.ifb.tcc.futdelas_api.application.model.Team;
 import br.edu.ifb.tcc.futdelas_api.application.repositories.TeamRepository;
 import br.edu.ifb.tcc.futdelas_api.infra.external.client.SofaScoreClient;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamDetailsResponse;
-import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamNextMatchesResponse;
 
 @Service
 public class TeamsService {
@@ -54,20 +53,6 @@ public class TeamsService {
                     } else {
                         log.info("Logo do time obtida com sucesso");
                         return response;
-                    }
-                });
-    }
-
-    public CompletableFuture<TeamNextMatchesResponse> searchTeamNextMatches(Long teamId, Integer pageIndex) {
-        log.info("Buscando próximas partidas do time");
-
-        return sofascoreClient.getTeamNextMatchesAsync(teamId, pageIndex)
-                .whenComplete((response, throwable) -> {
-                    if (throwable != null) {
-                        log.error("Erro ao buscar próximas partidas do time: {}", throwable.getMessage());
-                    } else {
-                        log.info("Próximas partidas do time obtidas com sucesso");
-                        log.debug("Resposta: {}", response);
                     }
                 });
     }

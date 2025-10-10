@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamDetailsResponse;
-import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TeamNextMatchesResponse;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TournamentDetailResponse;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TournamentLastMatchesResponse;
 import br.edu.ifb.tcc.futdelas_api.presentation.controller.response.TournamentStandingsResponse;
@@ -23,7 +22,7 @@ public class SofaScoreClient {
     public CompletableFuture<TournamentDetailResponse> getTournamentDetailsAsync() {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/details")
+                .path("/tournaments/detail")
                 .queryParam("tournamentId", 10257)
                 .build())
             .retrieve()
@@ -34,7 +33,7 @@ public class SofaScoreClient {
     public CompletableFuture<byte[]> getTournamentLogoAsync() {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/logo")
+                .path("/tournaments/get-logo")
                 .queryParam("tournamentId", 10257)
                 .build())
             .retrieve()
@@ -45,7 +44,7 @@ public class SofaScoreClient {
     public CompletableFuture<TournamentStandingsResponse> getTournamentStandingsAsync(){
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/standings")
+                .path("/tournaments/get-standings")
                 .queryParam("tournamentId", 10257)
                 .queryParam("seasonId", 73097)
                 .queryParam("type", "total")
@@ -58,7 +57,7 @@ public class SofaScoreClient {
     public CompletableFuture<TournamentLastMatchesResponse> getTournamentLastMatchesAsync(Integer pageIndex){
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/tournaments/last-matches")
+                .path("/tournaments/get-last-matches")
                 .queryParam("tournamentId", 10257)
                 .queryParam("seasonId", 73097)
                 .queryParam("pageIndex", pageIndex)
@@ -68,22 +67,10 @@ public class SofaScoreClient {
             .toFuture();
     }
 
-    public CompletableFuture<TeamNextMatchesResponse> getTeamNextMatchesAsync(Long teamId, Integer pageIndex) {
-        return sofascoreWebClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path("/teams/next-matches")
-                .queryParam("teamId", teamId)
-                .queryParam("pageIndex", pageIndex)
-                .build())
-            .retrieve()
-            .bodyToMono(TeamNextMatchesResponse.class)
-            .toFuture();
-    }
-
     public CompletableFuture<byte[]> getTeamLogoAsync(Long teamId) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/teams/logo")
+                .path("/teams/get-logo")
                 .queryParam("teamId", teamId)
                 .build())
             .retrieve()
@@ -94,7 +81,7 @@ public class SofaScoreClient {
     public CompletableFuture<TeamDetailsResponse> getTeamDetailsAsync(Long teamId) {
         return sofascoreWebClient.get()
             .uri(uriBuilder -> uriBuilder
-                .path("/teams/details")
+                .path("/teams/detail")
                 .queryParam("teamId", teamId)
                 .build())
             .retrieve()
