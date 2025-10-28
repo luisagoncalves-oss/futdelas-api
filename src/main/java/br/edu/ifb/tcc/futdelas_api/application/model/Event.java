@@ -12,4 +12,6 @@ public class Event {
     private Season season;
     private Status status;
     private RoundInfo roundInfo;
+    private Score homeScore;
+    private Score awayScore;
 }
