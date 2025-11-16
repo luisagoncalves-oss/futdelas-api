@@ -6,7 +6,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class SofaScoreApiConfig {
-
     private final SofaScoreApiProperties properties;
 
     public SofaScoreApiConfig(SofaScoreApiProperties properties) {

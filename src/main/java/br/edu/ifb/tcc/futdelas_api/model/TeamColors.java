@@ -1,9 +1,15 @@
 package br.edu.ifb.tcc.futdelas_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true) 
 public class TeamColors {
     private String primary;
     private String secondary;
     private String text;
+
+    public TeamColors() {
+    }
     
     public String getPrimary() {
         return primary;

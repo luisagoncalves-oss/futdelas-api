@@ -3,8 +3,10 @@ package br.edu.ifb.tcc.futdelas_api.model;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true) 
 public class Standing {
     private Long id;
     private String type;

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import br.edu.ifb.tcc.futdelas_api.controller.response.TeamDetailsResponse;
 import br.edu.ifb.tcc.futdelas_api.services.TeamsService;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -27,6 +28,11 @@ public class TeamsController {
     public CompletableFuture<TeamDetailsResponse> getTeamDetails(@PathVariable Long teamId) {
         validateTeamId(teamId);
         return teamsService.getTeamDetails(teamId);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public CompletableFuture<List<TeamDetailsResponse>> getAll() {
+        return teamsService.getAllTeams();
     }
     
 

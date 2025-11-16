@@ -22,4 +22,16 @@ public class SofaScoreApiProperties {
     public String getApiHost() {
         return apiHost;
     }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public void setApiHost(String apiHost) {
+        this.apiHost = apiHost;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
 }

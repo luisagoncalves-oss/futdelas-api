@@ -1,5 +1,8 @@
 package br.edu.ifb.tcc.futdelas_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true) 
 public class TitleHolder {
     private Long id;
     private String name;

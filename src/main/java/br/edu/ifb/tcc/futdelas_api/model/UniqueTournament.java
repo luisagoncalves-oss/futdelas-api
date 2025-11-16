@@ -2,6 +2,9 @@ package br.edu.ifb.tcc.futdelas_api.model;
 
 import java.time.OffsetDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true) 
 public class UniqueTournament {
     private String name;
     private TitleHolder titleHolder;
