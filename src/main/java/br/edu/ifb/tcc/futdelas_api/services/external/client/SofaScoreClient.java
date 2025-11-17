@@ -76,11 +76,6 @@ public class SofaScoreClient {
                         logger.error("Erro ao buscar detalhes do time {}: {}", teamId, error.getMessage());
                     } else {
                         logger.info("Resposta recebida para time {}: {}", teamId, response);
-                        if (response != null && response.getTeam() != null) {
-                            logger.info("Team name: {}", response.getTeam().getName());
-                            logger.info("Manager: {}", response.getTeam().getManager());
-                            logger.info("PregameForm: {}", response.getPregameForm());
-                        }
                     }
                 });
     }
@@ -100,7 +95,6 @@ public class SofaScoreClient {
                 .uri(uriBuilder -> queryParamCustomizer.apply(uriBuilder.path(path)).build())
                 .retrieve()
                 .bodyToMono(String.class)
-                .doOnNext(jsonString -> logger.info("JSON recebido: {}", jsonString))
                 .flatMap(jsonString -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
