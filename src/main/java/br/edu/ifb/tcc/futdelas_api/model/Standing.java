@@ -1,6 +1,5 @@
 package br.edu.ifb.tcc.futdelas_api.model;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,7 +12,7 @@ public class Standing {
     private String name;
     @JsonProperty("rows")
     private List<TeamPerformance> teamsPerformance;
-    private OffsetDateTime updatedAtTimestamp;
+    private Long updatedAtTimestamp;
     
     public Long getId() {
         return id;
@@ -39,10 +38,10 @@ public class Standing {
     public void setTeamsPerformance(List<TeamPerformance> teamsPerformance) {
         this.teamsPerformance = teamsPerformance;
     }
-    public OffsetDateTime getUpdatedAtTimestamp() {
+    public Long getUpdatedAtTimestamp() {
         return updatedAtTimestamp;
     }
-    public void setUpdatedAtTimestamp(OffsetDateTime updatedAtTimestamp) {
+    public void setUpdatedAtTimestamp(Long updatedAtTimestamp) {
         this.updatedAtTimestamp = updatedAtTimestamp;
     }
 
