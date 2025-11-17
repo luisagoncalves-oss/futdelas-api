@@ -3,12 +3,21 @@ package br.edu.ifb.tcc.futdelas_api.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 @JsonIgnoreProperties(ignoreUnknown = true) 
 public class UniqueTournament {
     private String name;
     private TitleHolder titleHolder;
+    
+    @JsonProperty("startDateTimestamp")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime startDateTimestamp;
+
+    @JsonProperty("endDateTimestamp")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime endDateTimestamp;
 
     public String getName() {
