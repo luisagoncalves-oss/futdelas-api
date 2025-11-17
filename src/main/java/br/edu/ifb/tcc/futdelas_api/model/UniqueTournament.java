@@ -1,6 +1,6 @@
 package br.edu.ifb.tcc.futdelas_api.model;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class UniqueTournament {
     private String name;
     private TitleHolder titleHolder;
-    private OffsetDateTime startDateTimestamp;
-    private OffsetDateTime endDateTimestamp;
+    private LocalDateTime startDateTimestamp;
+    private LocalDateTime endDateTimestamp;
 
     public String getName() {
         return name;
@@ -23,16 +23,16 @@ public class UniqueTournament {
     public void setTitleHolder(TitleHolder titleHolder) {
         this.titleHolder = titleHolder;
     }
-    public OffsetDateTime getStartDateTimestamp() {
+    public LocalDateTime getStartDateTimestamp() {
         return startDateTimestamp;
     }
-    public void setStartDateTimestamp(OffsetDateTime startDateTimestamp) {
+    public void setStartDateTimestamp(LocalDateTime startDateTimestamp) {
         this.startDateTimestamp = startDateTimestamp;
     }
-    public OffsetDateTime getEndDateTimestamp() {
+    public LocalDateTime getEndDateTimestamp() {
         return endDateTimestamp;
     }
-    public void setEndDateTimestamp(OffsetDateTime endDateTimestamp) {
+    public void setEndDateTimestamp(LocalDateTime endDateTimestamp) {
         this.endDateTimestamp = endDateTimestamp;
     }
 }
